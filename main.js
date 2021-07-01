@@ -11,6 +11,16 @@ myBtn.addEventListener('click', ()=>{
           console.log(myRequest.responseText);
           var reponse = JSON.parse(myRequest.responseText);
           myP.innerHTML = reponse.value;
+        
+          let dataTemp = reponse.value;
+
+          myP.innerHTML = "<hr>" + myP.innerHTML+ "/" + dataTemp; 
+
+
+
+
+
+
       };
     myRequest.send();
 } )
