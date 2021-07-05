@@ -2,6 +2,17 @@ console.log("JavaScript Charged");
 
 const myBtn = document.querySelector("#btn");
 const myP = document.querySelector("#p");
+
+const myBtn2 = document.querySelector("#btn2");
+const myP2 = document.querySelector("#p2");
+
+const myBtn3 = document.querySelector("#btn3");
+
+const myBtn4 = document.querySelector("#btn4");
+
+var params = 'id=7'
+var paramsCreate = 'name=test&gout=test';
+
 myBtn.addEventListener('click', ()=>{
 
     let myRequest = new XMLHttpRequest();
@@ -17,23 +28,14 @@ myBtn.addEventListener('click', ()=>{
     myRequest.send();
 } )
 
-const myBtn2 = document.querySelector("#btn2");
-const myP2 = document.querySelector("#p2");
-
-const myBtn3 = document.querySelector("#btn3");
-const myP3 = document.querySelector("#p3");
-
-//inutile FormData
-var data = new FormData();
-data.append('id', '3');
-
 myBtn2.addEventListener('click', ()=>{
 
     let myRequest = new XMLHttpRequest();
-    myRequest.open('POST', 'http://localhost/PhpGateau/index.php?controller=gateau&task=showApi');
+    myRequest.open('POST', 'http://localhost/PhpGateau/index.php?controller=gateau&task=showApi', true);
+    myRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     myRequest.onload = () => {
-      var reponse = JSON.parse(myRequest.responseText);
         
+        let reponse = JSON.parse(myRequest.responseText);
         console.log("---------------SHOWAPI------------");  
         console.log("GATEAUX");
         console.log("name : " + reponse.gateau.name + " | gout : " + reponse.gateau.gout);
@@ -42,5 +44,27 @@ myBtn2.addEventListener('click', ()=>{
           console.log("name : " + recipe.name + " | desc : " + recipe.desc);
         })
       };
-    myRequest.send('id=3');
+    myRequest.send(params);
+})
+
+myBtn3.addEventListener('click', ()=>{
+
+  let myRequest = new XMLHttpRequest();
+  myRequest.open('POST', 'http://localhost/PhpGateau/index.php?controller=gateau&task=supprApi', true);
+  myRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  myRequest.onload = () => {
+
+    };
+  myRequest.send(params);
+})
+
+myBtn4.addEventListener('click', ()=>{
+
+  let myRequest = new XMLHttpRequest();
+  myRequest.open('POST', 'http://localhost/PhpGateau/index.php?controller=gateau&task=addApi', true);
+  myRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  myRequest.onload = () => {
+
+    };
+  myRequest.send(paramsCreate);
 })
