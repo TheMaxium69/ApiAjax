@@ -1,70 +1,165 @@
 console.log("JavaScript Charged");
 
-const myBtn = document.querySelector("#btn");
-const myP = document.querySelector("#p");
 
-const myBtn2 = document.querySelector("#btn2");
-const myP2 = document.querySelector("#p2");
-
-const myBtn3 = document.querySelector("#btn3");
-
-const myBtn4 = document.querySelector("#btn4");
-
-var params = 'id=7'
-var paramsCreate = 'name=test&gout=test';
-
-myBtn.addEventListener('click', ()=>{
+const myP1 = document.querySelector('#p1');
+function indexGateau(){
 
     let myRequest = new XMLHttpRequest();
     myRequest.open('GET', 'http://localhost/PhpGateau/index.php?controller=gateau&task=indexApi');
     myRequest.onload = () => {
         var reponse = JSON.parse(myRequest.responseText);
         
-        console.log("---------------INDEXAPI------------");
+        myP1.innerHTML = "---------------INDEXAPI------------ <br>" ;
         reponse.forEach(gateau => {
-            console.log("name : " + gateau.name + " | gout : " + gateau.gout);
+          stock = myP1.innerHTML;
+          myP1.innerHTML = stock + "name : " + gateau.name + " | gout : " + gateau.gout + "<br>";
         });
       };
     myRequest.send();
-} )
+} 
 
-myBtn2.addEventListener('click', ()=>{
 
-    let myRequest = new XMLHttpRequest();
-    myRequest.open('POST', 'http://localhost/PhpGateau/index.php?controller=gateau&task=showApi', true);
-    myRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    myRequest.onload = () => {
+// const myP2 = document.querySelector('#p2');
+// function showGateau(arg1){
+
+//     let myRequest = new XMLHttpRequest();
+//     myRequest.open('POST', 'http://localhost/PhpGateau/index.php?controller=gateau&task=showApi', true);
+//     myRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+//     myRequest.onload = () => {
         
-        let reponse = JSON.parse(myRequest.responseText);
-        console.log("---------------SHOWAPI------------");  
-        console.log("GATEAUX");
-        console.log("name : " + reponse.gateau.name + " | gout : " + reponse.gateau.gout);
-        console.log("RECETTE");
-        reponse.recipes.forEach(recipe => {
-          console.log("name : " + recipe.name + " | desc : " + recipe.desc);
+//         let reponse = JSON.parse(myRequest.responseText);
+//         myP2.innerHTML = "---------------SHOWAPI------------" + "<br>"  
+//         + "GATEAUX" + "<br>"
+//         +  "name : " + reponse.gateau.name + " | gout : " + reponse.gateau.gout + "<br>" + "<br>"
+//         + "RECETTE" + "<br>";
+//         reponse.recipes.forEach(recipe => {
+//           stock = myP2.innerHTML;
+//           myP2.innerHTML = stock + " - name : " + recipe.name + " | desc : " + recipe.desc + "<br> <br>";
+//         })
+//       };
+//     myRequest.send(arg1);
+// }
+
+// function suppGateau(arg1){
+
+//   let myRequest = new XMLHttpRequest();
+//   myRequest.open('POST', 'http://localhost/PhpGateau/index.php?controller=gateau&task=supprApi', true);
+//   myRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+//   myRequest.onload = () => {
+
+//     };
+//   myRequest.send(arg1);
+// }
+
+// function addGateau(arg1){
+  
+//   let myRequest = new XMLHttpRequest();
+//   myRequest.open('POST', 'http://localhost/PhpGateau/index.php?controller=gateau&task=addApi', true);
+//   myRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+//   myRequest.onload = () => {
+
+//     };
+//   myRequest.send(arg1);
+// }
+
+
+const divGateaux = document.querySelector('.gateaux');
+const divRecettes = document.querySelector('.recettes');
+
+const boutonStart = document.querySelector('.start');
+
+boutonStart.addEventListener('click', event =>{
+    afficheTousLesGateaux();
+})
+
+function afficheTousLesGateaux(){
+  let maRequete = new XMLHttpRequest();   
+  maRequete.open('GET', 'http://localhost/PhpGateau/index.php?controller=gateau&task=indexApi' )
+  maRequete.onload =  () => {
+          let data = JSON.parse(maRequete.responseText)
+          faireDesCardsGateaux(data);
+  }
+        maRequete.send();
+}
+
+function afficheUnGateau(sonId){
+    let maRequete = new XMLHttpRequest();
+    maRequete.open('GET', `http://localhost/PhpGateau/index.php?controller=gateau&task=showApi&id=${sonId}` )
+    maRequete.onload =  () => {
+            let data = JSON.parse(maRequete.responseText)
+            let gateau = data.gateau   //objet
+            let recettes = data.recipes   //tableau d'objets recette
+            faireCardGateauEtCardsRecettes(gateau, recettes)
+    }
+          maRequete.send();
+}
+
+function faireDesCardsGateaux(tableauGateau){
+    let cards = "";
+    tableauGateau.forEach(element => {
+
+        card = `<div class="col-4 p-3">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+            <h5 class="card-title">${element.name}</h5>
+            <p class="card-text">${element.gout}</p>
+            <button value="${element.id}" class="btn btn-primary showGateau">voir le gateau</button>
+            </div>
+        </div>
+    </div>`
+        cards += card
+        divGateaux.innerHTML = cards
+        divRecettes.innerHTML = "";
+    });
+        document.querySelectorAll('.showGateau').forEach(bouton =>{
+        bouton.addEventListener('click', event =>{
+            afficheUnGateau(bouton.value);
         })
-      };
-    myRequest.send(params);
-})
+    })
+}
 
-myBtn3.addEventListener('click', ()=>{
+function faireCardGateauEtCardsRecettes(gateau, recettes) {
+  cardGateau = `<div class="col-4 p-3">
+  <div class="card" style="width: 18rem;">
+      <div class="card-body">
+      <h5 class="card-title">${gateau.name}</h5>
+      <p class="card-text">${gateau.gout}</p>
+      </div>
+           <button class="btn btn-success retourGateaux">Retour aux Gateaux</button></div> </div>`;
 
-  let myRequest = new XMLHttpRequest();
-  myRequest.open('POST', 'http://localhost/PhpGateau/index.php?controller=gateau&task=supprApi', true);
-  myRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  myRequest.onload = () => {
+  divGateaux.innerHTML = cardGateau;
+  cardsRecettes = "";
 
-    };
-  myRequest.send(params);
-})
+  recettes.forEach(recette => {
+      cardRecette = `<div class="col-4 p-3">
+      <div class="card" style="width: 18rem;">
+          <div class="card-body">
+          <h5 class="card-title">${recette.name}</h5>
+          <p class="card-text">${recette.desc}</p>
+          </div>
+               <button value="${recette.id}" class="btn btn-danger delRecipe">del la recipe</button></div> </div>`;
 
-myBtn4.addEventListener('click', ()=>{
+      cardsRecettes += cardRecette;
+  })
 
-  let myRequest = new XMLHttpRequest();
-  myRequest.open('POST', 'http://localhost/PhpGateau/index.php?controller=gateau&task=addApi', true);
-  myRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  myRequest.onload = () => {
+  divRecettes.innerHTML = cardsRecettes;
 
-    };
-  myRequest.send(paramsCreate);
-})
+  document.querySelector('.retourGateaux').addEventListener('click', event => {
+      afficheTousLesGateaux();
+
+  })
+  
+  document.querySelector('.delRecipe').addEventListener('click', event => {
+    
+    supprimerUneRecette(document.querySelector('.delRecipe').value);
+
+  })
+} 
+function supprimerUneRecette(sonId){
+  let maRequete = new XMLHttpRequest();
+  maRequete.open('GET', `http://localhost/PhpGateau/index.php?controller=recipe&task=suppApi&id=${sonId}` )
+  maRequete.onload =  () => {
+    console.log(maRequete.responseText);
+  }
+  maRequete.send();
+} 
