@@ -131,7 +131,7 @@ function faireCardGateauEtCardsRecettes(gateau, recettes) {
   cardsRecettes = "";
 
   recettes.forEach(recette => {
-      cardRecette = `<div class="col-4 p-3">
+      cardRecette = `<div class="col-4 p-3" data-recette="${recette.id}">
       <div class="card" style="width: 18rem;">
           <div class="card-body">
           <h5 class="card-title">${recette.name}</h5>
@@ -157,9 +157,26 @@ function faireCardGateauEtCardsRecettes(gateau, recettes) {
 } 
 function supprimerUneRecette(sonId){
   let maRequete = new XMLHttpRequest();
-  maRequete.open('GET', `http://localhost/PhpGateau/index.php?controller=recipe&task=suppApi&id=${sonId}` )
+  maRequete.open('POST', `http://localhost/PhpGateau/index.php?controller=recipe&task=suppApi` )
   maRequete.onload =  () => {
-    console.log(maRequete.responseText);
+
+    let divRecette = document.querySelector(`div[data-recette="${sonId}"]`)
+        divRecette.remove()
   }
-  maRequete.send();
+  maRequete.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  param= "id="+sonId;
+  maRequete.send(param);
+} 
+//form
+const formStart = document.querySelector('.formstart');
+
+formStart.addEventListener('click', event =>{
+    recupForm();
+})
+
+function recupForm(){
+
+  const formName = document.querySelector('.formname')
+  console.log(formName.value)
+
 } 
