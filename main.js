@@ -65,6 +65,8 @@ function indexGateau(){
 
 const divGateaux = document.querySelector('.gateaux');
 const divRecettes = document.querySelector('.recettes');
+const divUser = document.querySelector('.user');
+
 
 const boutonStart = document.querySelector('.start');
 
@@ -167,16 +169,55 @@ function supprimerUneRecette(sonId){
   param= "id="+sonId;
   maRequete.send(param);
 } 
-//form
+//les form
 const formStart = document.querySelector('.formstart');
 const formName = document.querySelector('.formname');
 const formEmail = document.querySelector('.formemail');
 const formMsg = document.querySelector('.formmsg');
 
-formStart.addEventListener('click', event =>{
+const sendUsername = document.querySelector('.sendusername');
+const sendPassword = document.querySelector('.sendpassword');
+const sendLogin = document.querySelector('.sendlogin');
 
+//Envoie de mail
+formStart.addEventListener('click', event =>{
   console.log(formName.value);
   console.log(formEmail.value);
   console.log(formMsg.value);
 })
- 
+
+
+//connection user
+sendLogin.addEventListener('click', event =>{
+    if (sendUsername.value && sendPassword.value){
+        login(sendUsername.value, sendPassword.value);
+    }
+})
+
+//fonction de login
+function login(username, password){
+    let maRequete = new XMLHttpRequest();
+    maRequete.open('POST', `http://localhost/PhpGateau/index.php?controller=user&task=loginApi` )
+    maRequete.onload =  () => {
+
+        let response = JSON.parse(maRequete.responseText)
+        faireUneCardUser(response);
+
+    }
+    maRequete.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    param= "username="+username+"&password="+password;
+    maRequete.send(param);
+}
+
+//Créé une card user
+function faireUneCardUser(user){
+    cardUser = `<div class="col-4 p-3">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+            <h5 class="card-title">${user.username}</h5>
+            <p class="card-text">${user.email}</p>
+            </div>
+        </div>
+    </div>`
+        divUser.innerHTML = cardUser
+}
