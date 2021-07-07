@@ -169,14 +169,14 @@ function supprimerUneRecette(sonId){
 } 
 //form
 const formStart = document.querySelector('.formstart');
+const formName = document.querySelector('.formname');
+const formEmail = document.querySelector('.formemail');
+const formMsg = document.querySelector('.formmsg');
 
 formStart.addEventListener('click', event =>{
-    recupForm();
+
+  console.log(formName.value);
+  console.log(formEmail.value);
+  console.log(formMsg.value);
 })
-
-function recupForm(){
-
-  const formName = document.querySelector('.formname')
-  console.log(formName.value)
-
-} 
+ 
