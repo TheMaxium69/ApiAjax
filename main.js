@@ -178,6 +178,7 @@ const formMsg = document.querySelector('.formmsg');
 const sendUsername = document.querySelector('.sendusername');
 const sendPassword = document.querySelector('.sendpassword');
 const sendLogin = document.querySelector('.sendlogin');
+const sendLoggout = document.querySelector('.sendLoggout');
 
 //Envoie de mail
 formStart.addEventListener('click', event =>{
@@ -220,4 +221,19 @@ function faireUneCardUser(user){
         </div>
     </div>`
         divUser.innerHTML = cardUser
+}
+
+sendLoggout.addEventListener('click', event =>{
+    loggout();
+})
+
+
+function loggout(){
+    let maRequete = new XMLHttpRequest();
+    maRequete.open('GET', `http://localhost/PhpGateau/index.php?controller=user&task=loggoutApi` )
+    maRequete.onload =  () => {
+        divUser.innerHTML = "";
+    }
+    maRequete.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    maRequete.send();
 }

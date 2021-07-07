@@ -10,7 +10,7 @@
   </head>
   <body>
     <h1>AjaxApi</h1>
-    <button id="btn" class="btn btn-success" onclick="indexGateau()">DEBUG</button>
+    <button id="btn" class="btn btn-primary" onclick="indexGateau()">DEBUG</button>
     <p id="p1"></p>
     
     <!-- <button id="btn2" class="btn btn-success" onclick="showGateau('id=1')">Requette [SHOW]</button>
@@ -23,7 +23,7 @@
     <p id="p4"></p> -->
 
 
-    <button class="btn btn-success start" id="boutonStart">Start</button>
+    <button class="btn btn-primary start" id="boutonStart">Start</button>
 
     <div class="row gateaux"></div>
 
@@ -44,7 +44,8 @@
     <small>connection</small>
     <input class="sendusername" type="text" name="username" placeholder="username">
     <input class="sendpassword" type="password" name="password" placeholder="password">
-    <input type="submit" class="btn btn-danger sendlogin" id="sendlogin">
+    <input type="submit" class="btn btn-success sendlogin" id="sendlogin" value="Se Connecter">
+    <input type="submit" class="btn btn-danger sendLoggout" id="sendLoggout" value="Se déconnecter">
 
     <div class="user"></div>
 
